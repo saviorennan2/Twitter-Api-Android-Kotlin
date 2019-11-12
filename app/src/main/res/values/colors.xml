@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#55acee</color>
+
+    <color name="twitterBlue">#ff55acee</color>
+    <color name="twitterDark">#292f33</color>
+    <color name="dividerGray">#ffe1e8ed</color>
+    <color name="gray">@android:color/darker_gray</color>
+</resources>

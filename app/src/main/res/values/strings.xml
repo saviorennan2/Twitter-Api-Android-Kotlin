@@ -1,0 +1,12 @@
+<resources>
+<string name="app_name">Twitter Android BTI</string>
+<string name="search">Search</string>
+<string name="activity_name_detail">Detail</string>
+<string name="internet_connection_error">Check your Internet connection</string>
+<string name="handle_twitter_token_error">TODO Twitter Token</string>
+<string name="tools_user_name">Android Bti</string>
+<string name="tools_screen_name">/@androidbti</string>
+<string name="tools_date">3k</string>
+<string name="tools_desc">Instituto Metrópole Digital UFRN - Tweet para aula de android</string>
+<string name="result_not_found">Not Found</string>
+</resources>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/detailUserPhoto"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/detailUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/detailUserPhoto"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/tools_user_name" />
+
+
+    <TextView
+        android:id="@+id/detailScreenName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/detailDate"
+        app:layout_constraintStart_toEndOf="@+id/detailUserName"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/tools_screen_name" />
+
+    <TextView
+        android:id="@+id/detailDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/tools_date"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toStartOf="@+id/detailTwitterLogo"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/tools_date" />
+
+    <ImageView
+        android:id="@+id/detailTwitterLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tw__ic_logo_blue" />
+
+    <TextView
+        android:id="@+id/detailDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/detailUserName"
+        app:layout_constraintTop_toBottomOf="@+id/detailUserName"
+        tools:text="@string/tools_desc" />
+</androidx.constraintlayout.widget.ConstraintLayout>
