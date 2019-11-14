@@ -30,6 +30,9 @@
             android:name=".activity.DetailActivity"
             android:label="@string/activity_name_detail"
             android:screenOrientation="portrait"/>
+
+        <service android:name=".activity.MyIntentService">
+        </service>
     </application>
 
 </manifest>

@@ -2,8 +2,10 @@ package com.android.activity
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.android.R
+import com.android.SQLiteRepository
 import com.android.adapter.SearchListAdapter
 import com.android.common.*
 import com.android.common.PreferenceHelper.defaultPrefs
@@ -29,6 +32,9 @@ import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
 
+    var tweets : List<Tweet>? = null
+    private var tweetsRepository: SQLiteRepository? = null
+
     private val tweetItemClicked: (tweet: Tweet) -> Unit = {
         DetailActivity.start(this@SearchActivity, it)
     }
@@ -37,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val prefs = defaultPrefs(this)
+        val prefs = PreferenceHelper.defaultPrefs(this)
         val accessToken: String? = prefs[PREF_TWITTER_ACCESS_TOKEN, ""]
 
         if (!Util.isNetworkAvailable()) {
@@ -48,6 +54,37 @@ class SearchActivity : AppCompatActivity() {
         if (accessToken.isNullOrEmpty()) {
             getToken()
         }
+
+        startService(Intent(this,MyIntentService::class.java))
+
+        tweetsRepository= SQLiteRepository(this)
+
+        updateList()
+
+
+    }
+
+    private fun list(tweets:MutableList<Tweet>){
+        this.tweets  = tweets
+//        Precisa reavaliar esse código para não criar sempre uma instância do adapter
+                        searchRecyclerView.adapter =
+                    SearchListAdapter(this@SearchActivity, this.tweets, tweetItemClicked)
+                searchRecyclerView.addItemDecoration(DividerItemDecoration(this@SearchActivity, LinearLayout.VERTICAL))
+
+    }
+
+    fun updateList(){
+        tweetsRepository?.list { list(it) }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+
+        if(item.itemId == R.id.action_update){
+            updateList()
+        }
+
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,7 +109,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.length > 2) {
 
-                        getData(newText)
+//                        getData(newText)
 
                 } else if (newText.isEmpty()) {
                     resultNotFoundView.visibility = View.GONE
@@ -88,48 +125,12 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun getData(queryText: String) {
-
-        if (!Util.isNetworkAvailable()) {
-            Toast.makeText(this, getString(R.string.internet_connection_error), Toast.LENGTH_LONG).show()
-            return
-        }
-
-
-            resultNotFoundView.visibility = View.GONE
-            searchOverlayProgressBar.show()
-
-
-        val prefs = defaultPrefs(this)
-        val accessToken: String? = prefs[PREF_TWITTER_ACCESS_TOKEN, ""]
-
-        val searchCall = ApiService.instance.getTweetList("Bearer $accessToken", queryText)
-        searchCall.enqueue(object : Callback<SearchResponseModel> {
-            override fun onFailure(call: Call<SearchResponseModel>, t: Throwable) {
-
-                    searchOverlayProgressBar.stop()
-
-                Toast.makeText(this@SearchActivity, getString(R.string.handle_twitter_token_error), Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            override fun onResponse(call: Call<SearchResponseModel>, response: Response<SearchResponseModel>) {
-                searchRecyclerView.adapter =
-                        SearchListAdapter(this@SearchActivity, response.body()?.statuses, tweetItemClicked)
-                searchRecyclerView.addItemDecoration(DividerItemDecoration(this@SearchActivity, LinearLayout.VERTICAL))
-
-                    searchOverlayProgressBar.stop()
-                    if (response.body()?.statuses?.count() ?: 0 < 1) {
-                        resultNotFoundView.visibility = View.VISIBLE
-                    }
-
-            }
-        })
-    }
-
     private fun getToken() {
 
-        val tokenCall = ApiService.instance.getToken("Basic " + Util.getBase64String(BEARER_TOKEN_CREDENTIALS), GRANT_TYPE)
+        val tokenCall = ApiService.instance.getToken("Basic " + Util.getBase64String(
+            BEARER_TOKEN_CREDENTIALS
+        ), GRANT_TYPE
+        )
         tokenCall.enqueue(object : Callback<TokenResponseModel> {
             override fun onFailure(call: Call<TokenResponseModel>, t: Throwable) {
                 Toast.makeText(this@SearchActivity, getString(R.string.handle_twitter_token_error), Toast.LENGTH_LONG)
@@ -140,7 +141,7 @@ class SearchActivity : AppCompatActivity() {
                 call: Call<TokenResponseModel>,
                 response: Response<TokenResponseModel>
             ) {
-                val prefs = defaultPrefs(this@SearchActivity)
+                val prefs = PreferenceHelper.defaultPrefs(applicationContext)
                 prefs[PREF_TWITTER_TOKEN_TYPE] = response.body()?.tokenType
                 prefs[PREF_TWITTER_ACCESS_TOKEN] = response.body()?.accessToken
             }
@@ -148,4 +149,6 @@ class SearchActivity : AppCompatActivity() {
         })
 
     }
+
+
 }

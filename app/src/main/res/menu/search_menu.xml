@@ -9,4 +9,10 @@
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search"/>
+
+    <item
+        android:id="@+id/action_update"
+        android:icon="@android:drawable/stat_notify_sync"
+        app:showAsAction="always"
+        android:title="Update"/>
 </menu>

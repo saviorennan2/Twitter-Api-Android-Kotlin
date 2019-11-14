@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.android.R
 import com.android.model.Tweet
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
@@ -30,11 +29,10 @@ class DetailActivity : AppCompatActivity() {
         //TODO need null check.
         tweet = intent.getParcelableExtra("tweet")
 
-        Picasso.get().load(tweet.user?.profileImageUrl).into(detailUserPhoto)
+//        Picasso.get().load(tweet.user?.profileImageUrl).into(detailUserPhoto)
         detailUserName.text = tweet.user?.name ?: ""
         detailScreenName.text = "@" + tweet.user?.screenName
         detailDesc.text = tweet.text
-
 
     }
 
