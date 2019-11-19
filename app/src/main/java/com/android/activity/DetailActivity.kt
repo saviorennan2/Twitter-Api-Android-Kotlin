@@ -29,7 +29,6 @@ class DetailActivity : AppCompatActivity() {
         //TODO need null check.
         tweet = intent.getParcelableExtra("tweet")
 
-//        Picasso.get().load(tweet.user?.profileImageUrl).into(detailUserPhoto)
         detailUserName.text = tweet.user?.name ?: ""
         detailScreenName.text = "@" + tweet.user?.screenName
         detailDesc.text = tweet.text

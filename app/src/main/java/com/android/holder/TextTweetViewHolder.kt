@@ -13,9 +13,7 @@ class TextTweetViewHolder(itemView: View) : BaseViewHolder(itemView) {
     val desc = itemView.itemSearchDesc
 
     fun bindViews(tweet: Tweet, itemClicked: (tweet: Tweet) -> Unit) {
-        //duration.text = product.productName
 
-//        Picasso.get().load(tweet.user?.profileImageUrl).into(userPhoto)
         userName.text = tweet.user?.name ?: ""
         userScreenName.text = "@" + tweet.user?.screenName
         desc.text = tweet.text

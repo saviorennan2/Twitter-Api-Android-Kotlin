@@ -42,11 +42,6 @@ class MyIntentService : IntentService("ServiceTwitter"){
             return
         }
 
-
-//        resultNotFoundView.visibility = View.GONE
-//        searchOverlayProgressBar.show()
-
-
         val prefs = PreferenceHelper.defaultPrefs(this)
         val accessToken: String? = prefs[PREF_TWITTER_ACCESS_TOKEN, ""]
 
@@ -54,28 +49,18 @@ class MyIntentService : IntentService("ServiceTwitter"){
         searchCall.enqueue(object : Callback<SearchResponseModel> {
             override fun onFailure(call: Call<SearchResponseModel>, t: Throwable) {
 
-//                searchOverlayProgressBar.stop()
-//
                 Toast.makeText(applicationContext, getString(R.string.handle_twitter_token_error), Toast.LENGTH_LONG)
                     .show()
             }
 
             override fun onResponse(call: Call<SearchResponseModel>, response: Response<SearchResponseModel>) {
-//                searchRecyclerView.adapter =
-//                    SearchListAdapter(this@SearchActivity, response.body()?.statuses, tweetItemClicked)
-//                searchRecyclerView.addItemDecoration(DividerItemDecoration(this@SearchActivity, LinearLayout.VERTICAL))
-//
-//                searchOverlayProgressBar.stop()
-//                if (response.body()?.statuses?.count() ?: 0 < 1) {
-//                    resultNotFoundView.visibility = View.VISIBLE
-//                }
 
                 var tweets = response.body()?.statuses;
 
                 for (tweet in tweets!! ){
                     tweetsRepository?.save(tweet)
                 }
-                Log.d("tweets", response.body()?.statuses?.get(0)?.text.toString())
+                Log.d("tweets", tweets?.get(0)?.text)
 
             }
         })

@@ -109,8 +109,6 @@ class SearchActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.length > 2) {
 
-//                        getData(newText)
-
                 } else if (newText.isEmpty()) {
                     resultNotFoundView.visibility = View.GONE
                 }
